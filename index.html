@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moral Judgment Study</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f0f2f5;
+        color: #222;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 36px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        font-size: 1.55rem;
+        margin-bottom: 8px;
+      }
+      h2 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #444;
+        margin: 20px 0 10px;
+      }
+      p {
+        line-height: 1.6;
+        color: #555;
+      }
+
+      /* Progress */
+      .prog-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: #777;
+      }
+      .prog-bar {
+        height: 7px;
+        background: #e4e6ea;
+        border-radius: 99px;
+        margin-bottom: 22px;
+      }
+      .prog-fill {
+        height: 100%;
+        background: #4a7cf7;
+        border-radius: 99px;
+        transition: width 0.35s ease;
+      }
+
+      /* Scenario boxes */
+      .scenario {
+        border-left: 4px solid #4a7cf7;
+        background: #f7f9ff;
+        padding: 14px 18px;
+        border-radius: 6px;
+        margin: 10px 0;
+      }
+      .scenario .label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #4a7cf7;
+        margin-bottom: 6px;
+      }
+      .scenario p {
+        font-size: 1rem;
+        color: #222;
+      }
+
+      /* AI panel */
+      .ai-panel {
+        margin-top: 18px;
+      }
+      .ai-toggle {
+        background: none;
+        border: 1.5px solid #2e9e4f;
+        color: #2e9e4f;
+        padding: 7px 16px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .ai-toggle:hover {
+        background: #f0fff4;
+      }
+      .ai-box {
+        border-left: 4px solid #2e9e4f;
+        background: #f0fff4;
+        padding: 14px 18px;
+        border-radius: 6px;
+        margin: 10px 0;
+      }
+      .ai-box .label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #2e9e4f;
+        margin-bottom: 6px;
+      }
+      .ai-box p {
+        font-size: 0.9rem;
+        color: #333;
+        line-height: 1.65;
+      }
+      .ai-pred {
+        border-color: #e07b00;
+        background: #fffbf0;
+      }
+      .ai-pred .label {
+        color: #e07b00;
+      }
+      .ai-pred p {
+        font-weight: 600;
+        color: #222;
+      }
+
+      /* Choices */
+      .choices {
+        margin: 22px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .choice {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 13px 18px;
+        border: 2px solid #dde0e8;
+        border-radius: 10px;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+        font-size: 0.97rem;
+      }
+      .choice:hover {
+        border-color: #4a7cf7;
+        background: #f5f8ff;
+      }
+      .choice.selected {
+        border-color: #4a7cf7;
+        background: #eef2ff;
+      }
+      .choice input[type="radio"] {
+        accent-color: #4a7cf7;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+
+      /* Buttons */
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.15s;
+      }
+      .btn-primary {
+        background: #4a7cf7;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #3a6ce7;
+      }
+      .btn-primary:disabled {
+        background: #b0b8d0;
+        cursor: default;
+      }
+
+      /* Badge */
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+      .badge-ai {
+        background: #d4f0de;
+        color: #1a6b35;
+      }
+      .badge-baseline {
+        background: #e2e5ea;
+        color: #444;
+      }
+
+      /* Instruction list */
+      .instr {
+        margin: 12px 0 24px;
+        padding-left: 22px;
+      }
+      .instr li {
+        margin: 8px 0;
+        line-height: 1.55;
+        color: #444;
+      }
+
+      /* Form fields */
+      .field {
+        margin-bottom: 18px;
+      }
+      .field label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 7px;
+        color: #333;
+      }
+      .field input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 2px solid #dde0e8;
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+      }
+      .field input:focus {
+        border-color: #4a7cf7;
+      }
+
+      /* Condition selector */
+      .cond-options {
+        display: flex;
+        gap: 12px;
+        margin-top: 4px;
+      }
+      .cond-opt {
+        flex: 1;
+        border: 2px solid #dde0e8;
+        border-radius: 10px;
+        padding: 14px;
+        cursor: pointer;
+        text-align: center;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .cond-opt:hover {
+        border-color: #4a7cf7;
+        background: #f5f8ff;
+      }
+      .cond-opt.selected {
+        border-color: #4a7cf7;
+        background: #eef2ff;
+      }
+      .cond-opt input[type="radio"] {
+        display: none;
+      }
+      .cond-opt .cond-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+      }
+      .cond-opt .cond-desc {
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      /* Completion code */
+      .code-box {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        color: #4a7cf7;
+        text-align: center;
+        background: #eef2ff;
+        border-radius: 10px;
+        padding: 28px;
+        margin: 20px 0;
+        cursor: pointer;
+        user-select: all;
+      }
+      .copy-hint {
+        text-align: center;
+        font-size: 0.82rem;
+        color: #888;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- ── WELCOME ── -->
+      <div id="screen-welcome" class="card">
+        <h1>Moral Judgment Study</h1>
+        <p style="margin-top: 8px; margin-bottom: 20px">
+          Thank you for participating. Fill in the form below and then start the
+          study.
+        </p>
+
+        <div class="field">
+          <label>Your Name</label>
+          <input
+            id="name-input"
+            type="text"
+            placeholder="e.g. Jane Smith"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="field">
+          <label>Study Condition</label>
+          <div class="cond-options" id="cond-options">
+            <label class="cond-opt" id="opt-baseline">
+              <input type="radio" name="cond" value="baseline" />
+              <div class="cond-title">No AI Assistance</div>
+              <div class="cond-desc">Judge scenarios on your own</div>
+            </label>
+            <label class="cond-opt" id="opt-ai">
+              <input type="radio" name="cond" value="ai" />
+              <div class="cond-title">With AI Assistance</div>
+              <div class="cond-desc">
+                AI analysis provided for each scenario
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <h2 style="margin-top: 8px">Instructions</h2>
+        <ul class="instr">
+          <li>You will see <strong>10 pairs of scenarios</strong>.</li>
+          <li>
+            For each pair, judge which scenario (if any) involves a
+            <strong>clearly morally wrong</strong> action — according to
+            ordinary moral standards in the US as of 2020.
+          </li>
+          <li>
+            Choose one of four options: whether Scenario 1 is wrong, Scenario 2
+            is wrong, both, or neither.
+          </li>
+          <li>
+            At the end you will receive a <strong>completion code</strong> —
+            paste it back into the MTurk form to get credit.
+          </li>
+          <li>Estimated time: <strong>5–8 minutes</strong>.</li>
+        </ul>
+
+        <button class="btn btn-primary" id="start-btn">Start Study →</button>
+      </div>
+
+      <!-- ── STUDY ── -->
+      <div id="screen-study" class="hidden">
+        <div class="prog-row">
+          <span id="prog-label">Question 1 of 10</span>
+          <span id="timer">0:00</span>
+        </div>
+        <div class="prog-bar">
+          <div class="prog-fill" id="prog-fill" style="width: 0%"></div>
+        </div>
+
+        <div class="card">
+          <span id="cond-badge" class="badge"></span>
+          <p style="margin-bottom: 16px; color: #333">
+            For which scenario does the main character do something
+            <strong>clearly morally wrong</strong>, according to ordinary moral
+            standards in the US as of 2020?
+          </p>
+
+          <div class="scenario">
+            <div class="label">Scenario 1</div>
+            <p id="s1-text"></p>
+          </div>
+          <div class="scenario">
+            <div class="label">Scenario 2</div>
+            <p id="s2-text"></p>
+          </div>
+
+          <!-- AI panel (hidden in baseline) -->
+          <div id="ai-panel" class="ai-panel hidden">
+            <button class="ai-toggle" id="ai-toggle-btn">
+              Show AI Analysis ▾
+            </button>
+            <div id="ai-content" class="hidden" style="margin-top: 12px">
+              <div class="ai-box">
+                <div class="label">AI Analysis — Scenario 1</div>
+                <p id="ai-s1"></p>
+              </div>
+              <div class="ai-box">
+                <div class="label">AI Analysis — Scenario 2</div>
+                <p id="ai-s2"></p>
+              </div>
+              <div class="ai-box ai-pred">
+                <div class="label">AI Prediction</div>
+                <p id="ai-pred"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="choices" id="choices">
+            <label class="choice" data-val="A"
+              ><input type="radio" name="ans" value="A" /> A. Wrong,
+              Wrong</label
+            >
+            <label class="choice" data-val="B"
+              ><input type="radio" name="ans" value="B" /> B. Wrong, Not
+              wrong</label
+            >
+            <label class="choice" data-val="C"
+              ><input type="radio" name="ans" value="C" /> C. Not wrong,
+              Wrong</label
+            >
+            <label class="choice" data-val="D"
+              ><input type="radio" name="ans" value="D" /> D. Not wrong, Not
+              wrong</label
+            >
+          </div>
+
+          <button class="btn btn-primary" id="next-btn" disabled>Next →</button>
+        </div>
+      </div>
+
+      <!-- ── COMPLETE ── -->
+      <div id="screen-complete" class="card hidden">
+        <h1>Study Complete!</h1>
+        <p style="margin-top: 8px" id="thanks-msg">
+          Thank you for your participation. Copy the completion code below and
+          paste it into the MTurk form to receive credit.
+        </p>
+        <div class="code-box" id="code-display" title="Click to select"></div>
+        <p class="copy-hint">
+          Click the code to select it, then Ctrl+C / Cmd+C to copy.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE = "https://moral-study-worker.moral-study-dh.workers.dev";
+      // ── URL params (condition can be pre-set by MTurk HIT link) ──
+      const p = new URLSearchParams(location.search);
+      const presetCondition = ["baseline", "ai"].includes(p.get("condition"))
+        ? p.get("condition")
+        : null;
+
+      // ── State ──
+      let workerId = "",
+        condition = presetCondition || "baseline";
+      let trials = [],
+        idx = 0,
+        answer = null,
+        qStart = 0;
+
+      // ── Screens ──
+      const screens = {
+        welcome: "screen-welcome",
+        study: "screen-study",
+        complete: "screen-complete",
+      };
+      function show(name) {
+        Object.values(screens).forEach((id) =>
+          document.getElementById(id).classList.add("hidden"),
+        );
+        document.getElementById(screens[name]).classList.remove("hidden");
+      }
+
+      // ── Init condition selector ──
+      function selectCond(val) {
+        condition = val;
+        document
+          .querySelectorAll(".cond-opt")
+          .forEach((el) => el.classList.remove("selected"));
+        document.getElementById("opt-" + val).classList.add("selected");
+        document.querySelector(`input[name=cond][value=${val}]`).checked = true;
+      }
+      // Pre-select from URL param; lock selector if condition is preset
+      selectCond(condition);
+      if (presetCondition) {
+        document.getElementById("cond-options").style.pointerEvents = "none";
+        document.getElementById("cond-options").style.opacity = "0.6";
+      }
+      document.querySelectorAll(".cond-opt").forEach((el) => {
+        el.addEventListener("click", () =>
+          selectCond(el.querySelector("input").value),
+        );
+      });
+
+      show("welcome");
+
+      // ── Start ──
+      document
+        .getElementById("start-btn")
+        .addEventListener("click", async () => {
+          const name = document.getElementById("name-input").value.trim();
+          if (!name) {
+            alert("Please enter your name.");
+            return;
+          }
+          if (!condition) {
+            alert("Please select a study condition.");
+            return;
+          }
+
+          // Use name as worker identifier (slugified)
+          workerId =
+            name.toLowerCase().replace(/\s+/g, "_") +
+            "_" +
+            Date.now().toString(36);
+          const btn = document.getElementById("start-btn");
+          btn.disabled = true;
+          btn.textContent = "Loading…";
+          // Store name for display on completion screen
+          window._participantName = name;
+          try {
+            const r = await fetch(
+              `${API_BASE}/trials?worker_id=${enc(workerId)}&condition=${condition}`,
+            );
+            if (!r.ok) throw new Error(await r.text());
+            ({ trials } = await r.json());
+            show("study");
+            renderQ(0);
+          } catch (e) {
+            alert("Failed to load study: " + e.message);
+            btn.disabled = false;
+            btn.textContent = "Start Study";
+          }
+        });
+
+      // ── Render question ──
+      function renderQ(i) {
+        const t = trials[i];
+        answer = null;
+        qStart = Date.now();
+
+        document.getElementById("prog-label").textContent =
+          `Question ${i + 1} of ${trials.length}`;
+        document.getElementById("prog-fill").style.width =
+          `${(i / trials.length) * 100}%`;
+        document.getElementById("next-btn").textContent =
+          i === trials.length - 1 ? "Finish ✓" : "Next →";
+        document.getElementById("next-btn").disabled = true;
+
+        document.getElementById("s1-text").textContent = t.scenario1;
+        document.getElementById("s2-text").textContent = t.scenario2;
+
+        // Reset choices
+        document.querySelectorAll(".choice").forEach((c) => {
+          c.classList.remove("selected");
+          c.querySelector("input").checked = false;
+        });
+
+        // AI condition
+        if (condition === "ai") {
+          document.getElementById("cond-badge").textContent =
+            "🤖 AI Assistance";
+          document.getElementById("cond-badge").className = "badge badge-ai";
+          document.getElementById("ai-panel").classList.remove("hidden");
+          document.getElementById("ai-content").classList.add("hidden");
+          document.getElementById("ai-toggle-btn").textContent =
+            "Show AI Analysis ▾";
+          document.getElementById("ai-s1").textContent =
+            t.scenario1_analysis || "—";
+          document.getElementById("ai-s2").textContent =
+            t.scenario2_analysis || "—";
+          document.getElementById("ai-pred").textContent = t.gpt_prediction
+            ? `${t.gpt_prediction}. ${t.gpt_prediction_label}`
+            : "—";
+        } else {
+          document.getElementById("cond-badge").textContent =
+            "No AI Assistance";
+          document.getElementById("cond-badge").className =
+            "badge badge-baseline";
+          document.getElementById("ai-panel").classList.add("hidden");
+        }
+      }
+
+      // ── Choice click ──
+      document.getElementById("choices").addEventListener("click", (e) => {
+        const c = e.target.closest(".choice");
+        if (!c) return;
+        document
+          .querySelectorAll(".choice")
+          .forEach((x) => x.classList.remove("selected"));
+        c.classList.add("selected");
+        c.querySelector("input").checked = true;
+        answer = c.dataset.val;
+        document.getElementById("next-btn").disabled = false;
+      });
+
+      // ── AI toggle ──
+      document.getElementById("ai-toggle-btn").addEventListener("click", () => {
+        const content = document.getElementById("ai-content");
+        const btn = document.getElementById("ai-toggle-btn");
+        const hidden = content.classList.toggle("hidden");
+        btn.textContent = hidden ? "Show AI Analysis ▾" : "Hide AI Analysis ▴";
+      });
+
+      // ── Next / Finish ──
+      document
+        .getElementById("next-btn")
+        .addEventListener("click", async () => {
+          if (!answer) return;
+          document.getElementById("next-btn").disabled = true;
+
+          const t = trials[idx];
+          const timeSpent = Math.round((Date.now() - qStart) / 1000);
+
+          // Fire-and-forget submit
+          fetch(`${API_BASE}/submit`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              worker_id: workerId,
+              trial_id: t.id,
+              condition,
+              answer,
+              time_spent: timeSpent,
+            }),
+          }).catch(() => {});
+
+          idx++;
+          if (idx >= trials.length) {
+            await finish();
+          } else {
+            renderQ(idx);
+          }
+        });
+
+      // ── Finish ──
+      async function finish() {
+        const codes = { baseline: "MORAL-BASE-2026", ai: "MORAL-AI-2026" };
+        document.getElementById("code-display").textContent = codes[condition];
+        if (window._participantName) {
+          document.getElementById("thanks-msg").textContent =
+            `Thank you, ${window._participantName}! Copy the completion code below and paste it into the MTurk form to receive credit.`;
+        }
+        show("complete");
+      }
+
+      // ── Timer ──
+      setInterval(() => {
+        if (
+          document.getElementById("screen-study").classList.contains("hidden")
+        )
+          return;
+        const s = Math.floor((Date.now() - qStart) / 1000);
+        document.getElementById("timer").textContent =
+          `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+      }, 500);
+
+      const enc = encodeURIComponent;
+    </script>
+  </body>
+</html>
