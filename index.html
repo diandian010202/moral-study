@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moral Judgment Study</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Nunito",
+          -apple-system,
+          sans-serif;
+        background: #ddeeff;
+        background-image:
+          radial-gradient(
+            circle at 20% 50%,
+            rgba(100, 180, 255, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(160, 210, 255, 0.2) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 60% 80%,
+            rgba(120, 200, 255, 0.15) 0%,
+            transparent 40%
+          );
+        color: #1a2a3a;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+
+      /* cute floating robot in background */
+      body::before {
+        content: "";
+        position: fixed;
+        right: -40px;
+        bottom: -20px;
+        width: 320px;
+        height: 320px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220'%3E%3C!-- antenna --%3E%3Cline x1='100' y1='10' x2='100' y2='35' stroke='%2388bbdd' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='8' r='6' fill='%2300aaff' opacity='0.7'/%3E%3C!-- head --%3E%3Crect x='55' y='35' width='90' height='70' rx='18' fill='%23b8d8f0' stroke='%2388bbdd' stroke-width='2'/%3E%3C!-- eyes --%3E%3Ccircle cx='80' cy='65' r='12' fill='white'/%3E%3Ccircle cx='120' cy='65' r='12' fill='white'/%3E%3Ccircle cx='83' cy='65' r='7' fill='%230088ff'/%3E%3Ccircle cx='123' cy='65' r='7' fill='%230088ff'/%3E%3Ccircle cx='85' cy='63' r='3' fill='white'/%3E%3Ccircle cx='125' cy='63' r='3' fill='white'/%3E%3C!-- mouth --%3E%3Crect x='82' y='88' width='36' height='8' rx='4' fill='%2388bbdd'/%3E%3Ccircle cx='86' cy='92' r='3' fill='%23b8d8f0'/%3E%3Ccircle cx='100' cy='92' r='3' fill='%23b8d8f0'/%3E%3Ccircle cx='114' cy='92' r='3' fill='%23b8d8f0'/%3E%3C!-- neck --%3E%3Crect x='90' y='105' width='20' height='12' rx='4' fill='%23a0c8e8'/%3E%3C!-- body --%3E%3Crect x='45' y='117' width='110' height='80' rx='16' fill='%23b8d8f0' stroke='%2388bbdd' stroke-width='2'/%3E%3C!-- chest panel --%3E%3Crect x='68' y='130' width='64' height='40' rx='8' fill='%23cce8f8' stroke='%2388bbdd' stroke-width='1.5'/%3E%3Ccircle cx='85' cy='145' r='7' fill='%2300aaff' opacity='0.6'/%3E%3Ccircle cx='100' cy='145' r='7' fill='%2300ddaa' opacity='0.6'/%3E%3Ccircle cx='115' cy='145' r='7' fill='%23ff88bb' opacity='0.6'/%3E%3Crect x='75' y='158' width='50' height='5' rx='3' fill='%2388bbdd' opacity='0.5'/%3E%3C!-- arms --%3E%3Crect x='20' y='120' width='24' height='60' rx='12' fill='%23b8d8f0' stroke='%2388bbdd' stroke-width='2'/%3E%3Crect x='156' y='120' width='24' height='60' rx='12' fill='%23b8d8f0' stroke='%2388bbdd' stroke-width='2'/%3E%3C!-- hands --%3E%3Ccircle cx='32' cy='186' r='12' fill='%23cce8f8' stroke='%2388bbdd' stroke-width='2'/%3E%3Ccircle cx='168' cy='186' r='12' fill='%23cce8f8' stroke='%2388bbdd' stroke-width='2'/%3E%3C!-- legs --%3E%3Crect x='68' y='197' width='28' height='20' rx='8' fill='%23a0c8e8'/%3E%3Crect x='104' y='197' width='28' height='20' rx='8' fill='%23a0c8e8'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        opacity: 0.35;
+        pointer-events: none;
+        z-index: 0;
+        animation: float 4s ease-in-out infinite;
+      }
+
+      /* left robot (mirrored, slightly different timing) */
+      body::after {
+        content: "";
+        position: fixed;
+        left: -40px;
+        bottom: -20px;
+        width: 260px;
+        height: 260px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220'%3E%3Cline x1='100' y1='10' x2='100' y2='35' stroke='%23bbaaee' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='8' r='6' fill='%23aa88ff' opacity='0.7'/%3E%3Crect x='55' y='35' width='90' height='70' rx='18' fill='%23d0c8f4' stroke='%23bbaaee' stroke-width='2'/%3E%3Ccircle cx='80' cy='65' r='12' fill='white'/%3E%3Ccircle cx='120' cy='65' r='12' fill='white'/%3E%3Ccircle cx='83' cy='65' r='7' fill='%238866ff'/%3E%3Ccircle cx='123' cy='65' r='7' fill='%238866ff'/%3E%3Ccircle cx='85' cy='63' r='3' fill='white'/%3E%3Ccircle cx='125' cy='63' r='3' fill='white'/%3E%3Crect x='78' y='86' width='44' height='9' rx='4.5' fill='%23bbaaee'/%3E%3Ccircle cx='87' cy='90' r='3' fill='%23d0c8f4'/%3E%3Ccircle cx='100' cy='90' r='3' fill='%23d0c8f4'/%3E%3Ccircle cx='113' cy='90' r='3' fill='%23d0c8f4'/%3E%3Crect x='90' y='105' width='20' height='12' rx='4' fill='%23bbaae0'/%3E%3Crect x='45' y='117' width='110' height='80' rx='16' fill='%23d0c8f4' stroke='%23bbaaee' stroke-width='2'/%3E%3Crect x='68' y='130' width='64' height='40' rx='8' fill='%23e4e0fc' stroke='%23bbaaee' stroke-width='1.5'/%3E%3Ccircle cx='85' cy='145' r='7' fill='%23ff88cc' opacity='0.7'/%3E%3Ccircle cx='100' cy='145' r='7' fill='%238866ff' opacity='0.7'/%3E%3Ccircle cx='115' cy='145' r='7' fill='%2344ddff' opacity='0.7'/%3E%3Crect x='75' y='158' width='50' height='5' rx='3' fill='%23bbaaee' opacity='0.5'/%3E%3Crect x='20' y='120' width='24' height='60' rx='12' fill='%23d0c8f4' stroke='%23bbaaee' stroke-width='2'/%3E%3Crect x='156' y='120' width='24' height='60' rx='12' fill='%23d0c8f4' stroke='%23bbaaee' stroke-width='2'/%3E%3Ccircle cx='32' cy='186' r='12' fill='%23e4e0fc' stroke='%23bbaaee' stroke-width='2'/%3E%3Ccircle cx='168' cy='186' r='12' fill='%23e4e0fc' stroke='%23bbaaee' stroke-width='2'/%3E%3Crect x='68' y='197' width='28' height='20' rx='8' fill='%23bbaae0'/%3E%3Crect x='104' y='197' width='28' height='20' rx='8' fill='%23bbaae0'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom left;
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 0;
+        animation: float2 5s ease-in-out infinite;
+        transform: scaleX(-1);
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      @keyframes float2 {
+        0%,
+        100% {
+          transform: scaleX(-1) translateY(0px);
+        }
+        50% {
+          transform: scaleX(-1) translateY(-10px);
+        }
+      }
+
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        padding: 36px;
+        border: 1.5px solid rgba(100, 180, 255, 0.3);
+        box-shadow:
+          0 8px 32px rgba(0, 100, 200, 0.1),
+          0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+      }
+      h1 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #0077cc;
+        margin-bottom: 8px;
+      }
+      h2 {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #0088dd;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin: 22px 0 10px;
+      }
+      p {
+        line-height: 1.6;
+        color: #445566;
+      }
+
+      /* Progress */
+      .prog-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.83rem;
+        color: #6699bb;
+        font-weight: 600;
+      }
+      .prog-bar {
+        height: 8px;
+        background: rgba(0, 120, 220, 0.12);
+        border-radius: 99px;
+        margin-bottom: 22px;
+        overflow: hidden;
+      }
+      .prog-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #44aaff, #0055ff);
+        border-radius: 99px;
+        box-shadow: 0 0 8px rgba(0, 150, 255, 0.6);
+        transition: width 0.35s ease;
+      }
+
+      /* Scenario boxes */
+      .scenario {
+        border-left: 3px solid #44aaff;
+        background: rgba(68, 170, 255, 0.06);
+        padding: 14px 18px;
+        border-radius: 12px;
+        margin: 10px 0;
+      }
+      .scenario .label {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #44aaff;
+        margin-bottom: 6px;
+      }
+      .scenario p {
+        font-size: 1rem;
+        color: #223344;
+      }
+
+      /* AI panel */
+      .ai-panel {
+        margin-top: 18px;
+      }
+      .ai-toggle {
+        background: rgba(100, 200, 150, 0.08);
+        border: 1.5px solid #44cc88;
+        color: #22aa66;
+        padding: 7px 16px;
+        border-radius: 20px;
+        font-size: 0.83rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        transition: all 0.2s;
+      }
+      .ai-toggle:hover {
+        background: rgba(100, 200, 150, 0.18);
+        box-shadow: 0 0 12px rgba(68, 200, 136, 0.4);
+      }
+      .ai-box {
+        border-left: 3px solid #44cc88;
+        background: rgba(68, 200, 136, 0.06);
+        padding: 14px 18px;
+        border-radius: 12px;
+        margin: 10px 0;
+      }
+      .ai-box .label {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #22aa66;
+        margin-bottom: 6px;
+      }
+      .ai-box p {
+        font-size: 0.88rem;
+        color: #334455;
+        line-height: 1.65;
+      }
+      .ai-pred {
+        border-color: #ffaa44;
+        background: rgba(255, 170, 68, 0.06);
+      }
+      .ai-pred .label {
+        color: #dd8800;
+      }
+      .ai-pred p {
+        font-weight: 700;
+        color: #443311;
+      }
+
+      /* Choices */
+      .choices {
+        margin: 22px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .choice {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 13px 18px;
+        border: 1.5px solid rgba(0, 120, 220, 0.2);
+        border-radius: 14px;
+        cursor: pointer;
+        font-size: 0.97rem;
+        color: #334466;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.15s;
+      }
+      .choice:hover {
+        border-color: #44aaff;
+        background: rgba(68, 170, 255, 0.08);
+        box-shadow: 0 0 12px rgba(0, 150, 255, 0.15);
+      }
+      .choice.selected {
+        border-color: #0088ff;
+        background: rgba(0, 136, 255, 0.1);
+        color: #0055cc;
+        box-shadow: 0 0 16px rgba(0, 136, 255, 0.25);
+      }
+      .choice input[type="radio"] {
+        accent-color: #0088ff;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+
+      /* Buttons */
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 14px;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        margin-top: 20px;
+        font-family: "Nunito", sans-serif;
+        transition: all 0.2s;
+        letter-spacing: 0.02em;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #44aaff, #0055ff);
+        color: #fff;
+        box-shadow:
+          0 4px 20px rgba(0, 100, 255, 0.4),
+          0 0 0 0 rgba(0, 150, 255, 0.4);
+      }
+      .btn-primary:hover {
+        box-shadow:
+          0 6px 28px rgba(0, 100, 255, 0.55),
+          0 0 20px rgba(68, 170, 255, 0.35);
+        transform: translateY(-1px);
+      }
+      .btn-primary:disabled {
+        background: linear-gradient(135deg, #aacce8, #99aacc);
+        box-shadow: none;
+        cursor: default;
+        transform: none;
+      }
+
+      /* Badge */
+      .badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 99px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+      }
+      .badge-ai {
+        background: rgba(68, 200, 136, 0.15);
+        color: #118844;
+        border: 1px solid rgba(68, 200, 136, 0.4);
+      }
+      .badge-baseline {
+        background: rgba(100, 150, 200, 0.12);
+        color: #4466aa;
+        border: 1px solid rgba(100, 150, 200, 0.3);
+      }
+
+      /* Instruction list */
+      .instr {
+        margin: 12px 0 24px;
+        padding-left: 22px;
+      }
+      .instr li {
+        margin: 8px 0;
+        line-height: 1.55;
+        color: #4455aa;
+      }
+      .instr strong {
+        color: #0055cc;
+      }
+
+      /* Form fields */
+      .field {
+        margin-bottom: 18px;
+      }
+      .field label {
+        display: block;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 8px;
+        color: #4477bb;
+      }
+      .field input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid rgba(0, 120, 220, 0.25);
+        border-radius: 12px;
+        font-size: 1rem;
+        outline: none;
+        background: rgba(255, 255, 255, 0.7);
+        font-family: "Nunito", sans-serif;
+        color: #1a2a3a;
+      }
+      .field input::placeholder {
+        color: #aabbcc;
+      }
+      .field input:focus {
+        border-color: #44aaff;
+        box-shadow: 0 0 0 3px rgba(68, 170, 255, 0.15);
+      }
+
+      /* Condition selector */
+      .cond-options {
+        display: flex;
+        gap: 12px;
+        margin-top: 4px;
+      }
+      .cond-opt {
+        flex: 1;
+        border: 1.5px solid rgba(0, 120, 220, 0.2);
+        border-radius: 16px;
+        padding: 14px;
+        cursor: pointer;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.15s;
+      }
+      .cond-opt:hover {
+        border-color: #44aaff;
+        background: rgba(68, 170, 255, 0.08);
+      }
+      .cond-opt.selected {
+        border-color: #0088ff;
+        background: rgba(0, 136, 255, 0.1);
+        box-shadow: 0 0 16px rgba(0, 136, 255, 0.2);
+      }
+      .cond-opt input[type="radio"] {
+        display: none;
+      }
+      .cond-opt .cond-title {
+        font-weight: 800;
+        font-size: 0.92rem;
+        color: #334466;
+        margin-bottom: 4px;
+      }
+      .cond-opt.selected .cond-title {
+        color: #0055cc;
+      }
+      .cond-opt .cond-desc {
+        font-size: 0.78rem;
+        color: #7799bb;
+      }
+
+      /* Completion code */
+      .code-box {
+        font-size: 1.9rem;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        color: #0066ff;
+        text-align: center;
+        background: rgba(0, 100, 255, 0.06);
+        border: 1.5px solid rgba(0, 100, 255, 0.2);
+        border-radius: 16px;
+        padding: 28px;
+        margin: 20px 0;
+        cursor: pointer;
+        user-select: all;
+        box-shadow: 0 0 24px rgba(0, 100, 255, 0.15);
+      }
+      .copy-hint {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #8899bb;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- ── WELCOME ── -->
+      <div id="screen-welcome" class="card">
+        <h1>Moral Judgment Study</h1>
+        <p style="margin-top: 8px; margin-bottom: 20px">
+          Thank you for participating. Fill in the form below and then start the
+          study.
+        </p>
+
+        <div class="field">
+          <label>Your Name</label>
+          <input
+            id="name-input"
+            type="text"
+            placeholder="e.g. Jane Smith"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="field">
+          <label>Study Condition</label>
+          <div class="cond-options" id="cond-options">
+            <label class="cond-opt" id="opt-baseline">
+              <input type="radio" name="cond" value="baseline" />
+              <div class="cond-title">No AI Assistance</div>
+              <div class="cond-desc">Judge scenarios on your own</div>
+            </label>
+            <label class="cond-opt" id="opt-ai">
+              <input type="radio" name="cond" value="ai" />
+              <div class="cond-title">With AI Assistance</div>
+              <div class="cond-desc">
+                AI analysis provided for each scenario
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <h2 style="margin-top: 8px">Instructions</h2>
+        <ul class="instr">
+          <li>You will see <strong>10 pairs of scenarios</strong>.</li>
+          <li>
+            For each pair, judge which scenario (if any) involves a
+            <strong>clearly morally wrong</strong> action — according to
+            ordinary moral standards in the US as of 2020.
+          </li>
+          <li>
+            Choose one of four options: whether Scenario 1 is wrong, Scenario 2
+            is wrong, both, or neither.
+          </li>
+          <li>
+            At the end you will receive a <strong>completion code</strong> —
+            paste it back into the MTurk form to get credit.
+          </li>
+          <li>Estimated time: <strong>5–8 minutes</strong>.</li>
+        </ul>
+
+        <button class="btn btn-primary" id="start-btn">Start Study →</button>
+      </div>
+
+      <!-- ── STUDY ── -->
+      <div id="screen-study" class="hidden">
+        <div class="prog-row">
+          <span id="prog-label">Question 1 of 10</span>
+          <span id="timer">0:00</span>
+        </div>
+        <div class="prog-bar">
+          <div class="prog-fill" id="prog-fill" style="width: 0%"></div>
+        </div>
+
+        <div class="card">
+          <span id="cond-badge" class="badge"></span>
+          <p style="margin-bottom: 16px; color: #333">
+            For which scenario does the main character do something
+            <strong>clearly morally wrong</strong>, according to ordinary moral
+            standards in the US as of 2020?
+          </p>
+
+          <div class="scenario">
+            <div class="label">Scenario 1</div>
+            <p id="s1-text"></p>
+          </div>
+          <div class="scenario">
+            <div class="label">Scenario 2</div>
+            <p id="s2-text"></p>
+          </div>
+
+          <!-- AI panel (hidden in baseline) -->
+          <div id="ai-panel" class="ai-panel hidden">
+            <button class="ai-toggle" id="ai-toggle-btn">
+              Show AI Analysis ▾
+            </button>
+            <div id="ai-content" class="hidden" style="margin-top: 12px">
+              <div class="ai-box">
+                <div class="label">AI Analysis — Scenario 1</div>
+                <p id="ai-s1"></p>
+              </div>
+              <div class="ai-box">
+                <div class="label">AI Analysis — Scenario 2</div>
+                <p id="ai-s2"></p>
+              </div>
+              <div class="ai-box ai-pred">
+                <div class="label">AI Prediction</div>
+                <p id="ai-pred"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="choices" id="choices">
+            <label class="choice" data-val="A"
+              ><input type="radio" name="ans" value="A" /> A. Wrong,
+              Wrong</label
+            >
+            <label class="choice" data-val="B"
+              ><input type="radio" name="ans" value="B" /> B. Wrong, Not
+              wrong</label
+            >
+            <label class="choice" data-val="C"
+              ><input type="radio" name="ans" value="C" /> C. Not wrong,
+              Wrong</label
+            >
+            <label class="choice" data-val="D"
+              ><input type="radio" name="ans" value="D" /> D. Not wrong, Not
+              wrong</label
+            >
+          </div>
+
+          <button class="btn btn-primary" id="next-btn" disabled>Next →</button>
+        </div>
+      </div>
+
+      <!-- ── COMPLETE ── -->
+      <div id="screen-complete" class="card hidden">
+        <h1>Study Complete!</h1>
+        <p style="margin-top: 8px" id="thanks-msg">
+          Thank you for your participation. Copy the completion code below and
+          paste it into the MTurk form to receive credit.
+        </p>
+        <div class="code-box" id="code-display" title="Click to select"></div>
+        <p class="copy-hint">
+          Click the code to select it, then Ctrl+C / Cmd+C to copy.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE = "https://moral-study-worker.moral-study-dh.workers.dev";
+      // ── URL params (condition can be pre-set by MTurk HIT link) ──
+      const p = new URLSearchParams(location.search);
+      const presetCondition = ["baseline", "ai"].includes(p.get("condition"))
+        ? p.get("condition")
+        : null;
+
+      // ── State ──
+      let workerId = "",
+        condition = presetCondition || "baseline";
+      let trials = [],
+        idx = 0,
+        answer = null,
+        qStart = 0;
+
+      // ── Screens ──
+      const screens = {
+        welcome: "screen-welcome",
+        study: "screen-study",
+        complete: "screen-complete",
+      };
+      function show(name) {
+        Object.values(screens).forEach((id) =>
+          document.getElementById(id).classList.add("hidden"),
+        );
+        document.getElementById(screens[name]).classList.remove("hidden");
+      }
+
+      // ── Init condition selector ──
+      function selectCond(val) {
+        condition = val;
+        document
+          .querySelectorAll(".cond-opt")
+          .forEach((el) => el.classList.remove("selected"));
+        document.getElementById("opt-" + val).classList.add("selected");
+        document.querySelector(`input[name=cond][value=${val}]`).checked = true;
+      }
+      // Pre-select from URL param; lock selector if condition is preset
+      selectCond(condition);
+      if (presetCondition) {
+        document.getElementById("cond-options").style.pointerEvents = "none";
+        document.getElementById("cond-options").style.opacity = "0.6";
+      }
+      document.querySelectorAll(".cond-opt").forEach((el) => {
+        el.addEventListener("click", () =>
+          selectCond(el.querySelector("input").value),
+        );
+      });
+
+      show("welcome");
+
+      // ── Start ──
+      document
+        .getElementById("start-btn")
+        .addEventListener("click", async () => {
+          const name = document.getElementById("name-input").value.trim();
+          if (!name) {
+            alert("Please enter your name.");
+            return;
+          }
+          if (!condition) {
+            alert("Please select a study condition.");
+            return;
+          }
+
+          // Use name as worker identifier (slugified)
+          workerId =
+            name.toLowerCase().replace(/\s+/g, "_") +
+            "_" +
+            Date.now().toString(36);
+          const btn = document.getElementById("start-btn");
+          btn.disabled = true;
+          btn.textContent = "Loading…";
+          // Store name for display on completion screen
+          window._participantName = name;
+          try {
+            const r = await fetch(
+              `${API_BASE}/trials?worker_id=${enc(workerId)}&condition=${condition}`,
+            );
+            if (!r.ok) throw new Error(await r.text());
+            ({ trials } = await r.json());
+            show("study");
+            renderQ(0);
+          } catch (e) {
+            alert("Failed to load study: " + e.message);
+            btn.disabled = false;
+            btn.textContent = "Start Study";
+          }
+        });
+
+      // ── Render question ──
+      function renderQ(i) {
+        const t = trials[i];
+        answer = null;
+        qStart = Date.now();
+
+        document.getElementById("prog-label").textContent =
+          `Question ${i + 1} of ${trials.length}`;
+        document.getElementById("prog-fill").style.width =
+          `${(i / trials.length) * 100}%`;
+        document.getElementById("next-btn").textContent =
+          i === trials.length - 1 ? "Finish ✓" : "Next →";
+        document.getElementById("next-btn").disabled = true;
+
+        document.getElementById("s1-text").textContent = t.scenario1;
+        document.getElementById("s2-text").textContent = t.scenario2;
+
+        // Reset choices
+        document.querySelectorAll(".choice").forEach((c) => {
+          c.classList.remove("selected");
+          c.querySelector("input").checked = false;
+        });
+
+        // AI condition
+        if (condition === "ai") {
+          document.getElementById("cond-badge").textContent =
+            "🤖 AI Assistance";
+          document.getElementById("cond-badge").className = "badge badge-ai";
+          document.getElementById("ai-panel").classList.remove("hidden");
+          document.getElementById("ai-content").classList.add("hidden");
+          document.getElementById("ai-toggle-btn").textContent =
+            "Show AI Analysis ▾";
+          document.getElementById("ai-s1").textContent =
+            t.scenario1_analysis || "—";
+          document.getElementById("ai-s2").textContent =
+            t.scenario2_analysis || "—";
+          document.getElementById("ai-pred").textContent = t.gpt_prediction
+            ? `${t.gpt_prediction}. ${t.gpt_prediction_label}`
+            : "—";
+        } else {
+          document.getElementById("cond-badge").textContent =
+            "No AI Assistance";
+          document.getElementById("cond-badge").className =
+            "badge badge-baseline";
+          document.getElementById("ai-panel").classList.add("hidden");
+        }
+      }
+
+      // ── Choice click ──
+      document.getElementById("choices").addEventListener("click", (e) => {
+        const c = e.target.closest(".choice");
+        if (!c) return;
+        document
+          .querySelectorAll(".choice")
+          .forEach((x) => x.classList.remove("selected"));
+        c.classList.add("selected");
+        c.querySelector("input").checked = true;
+        answer = c.dataset.val;
+        document.getElementById("next-btn").disabled = false;
+      });
+
+      // ── AI toggle ──
+      document.getElementById("ai-toggle-btn").addEventListener("click", () => {
+        const content = document.getElementById("ai-content");
+        const btn = document.getElementById("ai-toggle-btn");
+        const hidden = content.classList.toggle("hidden");
+        btn.textContent = hidden ? "Show AI Analysis ▾" : "Hide AI Analysis ▴";
+      });
+
+      // ── Next / Finish ──
+      document
+        .getElementById("next-btn")
+        .addEventListener("click", async () => {
+          if (!answer) return;
+          document.getElementById("next-btn").disabled = true;
+
+          const t = trials[idx];
+          const timeSpent = Math.round((Date.now() - qStart) / 1000);
+
+          // Fire-and-forget submit
+          fetch(`${API_BASE}/submit`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              worker_id: workerId,
+              trial_id: t.id,
+              condition,
+              answer,
+              time_spent: timeSpent,
+            }),
+          }).catch(() => {});
+
+          idx++;
+          if (idx >= trials.length) {
+            await finish();
+          } else {
+            renderQ(idx);
+          }
+        });
+
+      // ── Finish ──
+      async function finish() {
+        const codes = { baseline: "MORAL-BASE-2026", ai: "MORAL-AI-2026" };
+        document.getElementById("code-display").textContent = codes[condition];
+        if (window._participantName) {
+          document.getElementById("thanks-msg").textContent =
+            `Thank you, ${window._participantName}! Copy the completion code below and paste it into the MTurk form to receive credit.`;
+        }
+        show("complete");
+      }
+
+      // ── Timer ──
+      setInterval(() => {
+        if (
+          document.getElementById("screen-study").classList.contains("hidden")
+        )
+          return;
+        const s = Math.floor((Date.now() - qStart) / 1000);
+        document.getElementById("timer").textContent =
+          `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+      }, 500);
+
+      const enc = encodeURIComponent;
+    </script>
+  </body>
+</html>
