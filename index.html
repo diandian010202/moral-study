@@ -780,8 +780,7 @@
 
       // ── Finish ──
       async function finish() {
-        const codes = { baseline: "MORAL-BASE-2026", ai: "MORAL-AI-2026" };
-        document.getElementById("code-display").textContent = codes[condition];
+        document.getElementById("code-display").textContent = workerId;
         if (window._participantName) {
           document.getElementById("thanks-msg").textContent =
             `Thank you, ${window._participantName}! Copy the completion code below and paste it into the MTurk form to receive credit.`;
@@ -804,3 +803,4 @@
     </script>
   </body>
 </html>
+
